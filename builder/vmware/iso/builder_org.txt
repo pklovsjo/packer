@@ -104,7 +104,7 @@ func (b *Builder) Prepare(raws ...interface{}) ([]string, error) {
 	if b.config.DiskSizeExt == 0 {
 		b.config.DiskSizeExt = 40000
 	}
-
+	
 	if b.config.DiskTypeId == "" {
 		// Default is growable virtual disk split in 2GB files.
 		b.config.DiskTypeId = "1"

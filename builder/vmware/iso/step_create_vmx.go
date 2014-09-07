@@ -11,10 +11,11 @@ import (
 )
 
 type vmxTemplateData struct {
-	Name     string
-	GuestOS  string
-	DiskName string
-	ISOPath  string
+	Name        string
+	GuestOS     string
+	DiskName    string
+	DiskNameExt string
+	ISOPath     string
 }
 
 // This step creates the VMX file for the VM.
@@ -38,10 +39,11 @@ func (s *stepCreateVMX) Run(state multistep.StateBag) multistep.StepAction {
 	ui.Say("Building and writing VMX file")
 
 	tplData := &vmxTemplateData{
-		Name:     config.VMName,
-		GuestOS:  config.GuestOSType,
-		DiskName: config.DiskName,
-		ISOPath:  isoPath,
+		Name:        config.VMName,
+		GuestOS:     config.GuestOSType,
+		DiskName:    config.DiskName,
+		DiskNameExt: config.DiskNameExt,
+		ISOPath:     isoPath,
 	}
 
 	vmxTemplate := DefaultVMXTemplate
@@ -174,6 +176,9 @@ scsi0.virtualDev = "lsilogic"
 scsi0:0.fileName = "{{ .DiskName }}.vmdk"
 scsi0:0.present = "TRUE"
 scsi0:0.redo = ""
+scsi0:1.fileName = "{{ .DiskNameExt }}.vmdk"
+scsi0:1.present = "FALSE"
+scsi0:1.redo = ""
 sound.startConnected = "FALSE"
 tools.syncTime = "TRUE"
 tools.upgrade.policy = "upgradeAtPowerCycle"

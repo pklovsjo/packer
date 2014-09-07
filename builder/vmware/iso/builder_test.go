@@ -175,6 +175,38 @@ func TestBuilderPrepare_DiskSize(t *testing.T) {
 	}
 }
 
+func TestBuilderPrepare_DiskSizeExt(t *testing.T) {
+	var b Builder
+	config := testConfig()
+
+	delete(config, "disk_size_ext")
+	warns, err := b.Prepare(config)
+	if len(warns) > 0 {
+		t.Fatalf("bad: %#v", warns)
+	}
+	if err != nil {
+		t.Fatalf("bad err: %s", err)
+	}
+
+	if b.config.DiskSizeExt != 40000 {
+		t.Fatalf("bad size: %d", b.config.DiskSizeExt)
+	}
+
+	config["disk_size_ext"] = 60000
+	b = Builder{}
+	warns, err = b.Prepare(config)
+	if len(warns) > 0 {
+		t.Fatalf("bad: %#v", warns)
+	}
+	if err != nil {
+		t.Fatalf("should not have error: %s", err)
+	}
+
+	if b.config.DiskSizeExt != 60000 {
+		t.Fatalf("bad size: %s", b.config.DiskSizeExt)
+	}
+}
+
 func TestBuilderPrepare_FloppyFiles(t *testing.T) {
 	var b Builder
 	config := testConfig()
